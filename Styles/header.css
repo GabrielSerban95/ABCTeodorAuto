@@ -1,0 +1,16 @@
+header {
+    height: 30%;
+    background-color: rgba(15, 131, 232, 0.47);
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.logo {
+    margin: auto;
+}
+
+.title h1{
+    text-wrap: wrap;
+}

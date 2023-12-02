@@ -1,0 +1,30 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    max-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    object-fit: contain;
+}
+
+video {
+    min-width: 100%;
+    min-height: 100%;
+    opacity: .3;
+    background-color: black;
+}

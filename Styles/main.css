@@ -1,0 +1,44 @@
+/* main {
+    height: 135rem;
+} */
+
+.content {
+    display: grid;
+    gap: 1rem;
+    margin: 30px;
+}
+
+.page {
+    margin: 10% 0;
+    display: flex;
+    flex-direction: column;
+    gap:3rem;
+} 
+
+.slide:nth-child(odd) {
+    align-self: end;
+    text-align: end;
+    transition: all 2s;
+}
+
+.slide:nth-child(even) {
+    transition: all 4s;
+}
+
+.slide {
+    padding: 10px;
+    max-width: 400px;
+}
+.slide1 {
+    align-self: end;
+}
+
+
+.hidden {
+    opacity: 0;
+}
+
+p {
+    font-weight: 500;
+    font-style: bold;
+}
