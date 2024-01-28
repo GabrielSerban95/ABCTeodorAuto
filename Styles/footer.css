@@ -1,8 +1,8 @@
-/* footer {
+footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-} */
+}
 
 
 .address {
@@ -11,7 +11,7 @@
     padding: 1rem;
 }
 
-.address h2{
+.address h2 {
     margin: 1rem;
 }
 
