@@ -1,0 +1,26 @@
+@media (max-width: 768px) {
+    header {
+        max-height: 150px;
+        font-size: 13px;
+        padding: 1.5rem;
+    }
+
+    main {
+        font-size: 10px;
+        min-height: 500rem;
+    }
+
+    .page {
+        gap: .1rem;
+    }
+
+    footer {
+        max-height: 200px;
+        font-size: 12px;
+    }
+
+    .address {
+        padding: .35rem;
+        margin: 0;
+    }
+}
