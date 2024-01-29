@@ -1,6 +1,6 @@
 @media (max-width: 768px) {
     header {
-        height: 200px;
+        max-height: 200px;
         font-size: 13px;
         padding: 1.5rem;
     }

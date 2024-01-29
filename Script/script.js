@@ -7,7 +7,7 @@ $(document).ready(function () {
     $(window).scroll(function () {
         // Ajustează înălțimea minimă a header-ului în funcție de poziția de scroll
         if ($(window).width() < 768) {
-            $("header").css("min-height", ($(window).scrollTop() > 50) ? 150 : 200);
+            $("header").css("max-height", ($(window).scrollTop() > 50) ? 150 : 200);
 
             // Definirea elementelor și a condițiilor specifice pentru fiecare
             var scrollSections = [
