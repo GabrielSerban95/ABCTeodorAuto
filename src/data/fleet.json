@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fleet-1",
+    "name": "Volkswagen Golf 7 (Manual)",
+    "category": "Categoria B",
+    "year": "2021",
+    "features": ["Dublă comandă omologată RAR", "Senzori parcare 360°", "Climatronic", "Asistență pornire în rampă"],
+    "image": "/Photos/cat.B.jpg"
+  },
+  {
+    "id": "fleet-2",
+    "name": "Renault Clio 5 (Automat)",
+    "category": "Categoria B (Automată)",
+    "year": "2022",
+    "features": ["Cutie automată EDC", "Cameră marșarier", "Confort sporit în traficul urban"],
+    "image": "/Photos/cat.B.jpg"
+  },
+  {
+    "id": "fleet-3",
+    "name": "MAN TGX 18.440 Heavy Truck",
+    "category": "Categoria C / C+E",
+    "year": "2020",
+    "features": ["Motor 440 CP Euro 6", "Sistem frânare asistată EBS", "Oglinzi electrice & retrovizoare panoramice"],
+    "image": "/Photos/cat.C..jpg"
+  }
+]

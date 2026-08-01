@@ -1,0 +1,50 @@
+[
+  {
+    "id": "inst-1",
+    "name": "Teodor Popescu",
+    "role": "Instructor Senior Cat. B",
+    "experience": "14 ani experiență",
+    "passRate": "96%",
+    "phone": "0722 111 222",
+    "categories": ["cat-b", "extra"],
+    "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
+    "bio": "Calm, răbdător și dedicat fiecărui elev. Specializat pe învățarea conducerii defensive și depășirea emoțiilor de examen.",
+    "car": "Volkswagen Golf 7 - Cutie Manuală"
+  },
+  {
+    "id": "inst-2",
+    "name": "Adrian Ionescu",
+    "role": "Instructor Profesionist Cat. C / C+E",
+    "experience": "18 ani experiență",
+    "passRate": "94%",
+    "phone": "0722 333 444",
+    "categories": ["cat-c", "cat-ce"],
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "bio": "Fost conducător auto de cursă lungă cu o vastă cunoaștere a vehiculelor de mare tonaj și a normelor de siguranță rutieră.",
+    "car": "MAN TGX 18.440 & Semiremorcă"
+  },
+  {
+    "id": "inst-3",
+    "name": "Elena Dumitrescu",
+    "role": "Instructor Auto Cat. B & Profesor Legislație",
+    "experience": "9 ani experiență",
+    "passRate": "98%",
+    "phone": "0722 555 666",
+    "categories": ["cat-b", "extra", "instructor-course"],
+    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    "bio": "Pasionată de psihologia conducerii rutiere. Explică într-un mod prietenos și extrem de intuitiv noțiunile legislative.",
+    "car": "Renault Clio 5 - Cutie Automată"
+  },
+  {
+    "id": "inst-4",
+    "name": "Mihai Stanciu",
+    "role": "Instructor Cat. B & C",
+    "experience": "11 ani experiență",
+    "passRate": "93%",
+    "phone": "0722 777 888",
+    "categories": ["cat-b", "cat-c"],
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "bio": "Axat pe parcursul practic intens și navigarea ușoară a intersecțiilor dificile din traficul ploieștean.",
+    "car": "Volkswagen Polo VI / Mercedes Atego"
+  }
+]

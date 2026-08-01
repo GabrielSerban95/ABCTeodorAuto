@@ -1,0 +1,96 @@
+[
+  {
+    "id": "cat-b",
+    "title": "Categoria B (Autoturisme)",
+    "badge": "Cel Mai Popular",
+    "priceKey": "CAT_B",
+    "defaultPrice": "2200",
+    "duration": "4-6 Săptămâni",
+    "theoryHours": 24,
+    "practiceHours": 30,
+    "vehicleImage": "/Photos/cat.B.jpg",
+    "description": "Pregătire completă teoretică și mecanică pentru conducerea autoturismelor cu masa maximă autorizată de până la 3.500 kg.",
+    "includes": [
+      "24 ore teorie legislație rutieră & prim ajutor",
+      "30 ore de conducere practică cu instructor dedicat",
+      "Combustibil inclus pe întreaga durată a orelor",
+      "Simulări de examen chestionare DRPCIV pe tabletă",
+      "Posibilitate de plată în 3 rate egale",
+      "Mașini moderne dotate cu climatizare și senzori"
+    ]
+  },
+  {
+    "id": "cat-c",
+    "title": "Categoria C (Camioane / Marfă)",
+    "badge": "Profesioniști",
+    "priceKey": "CAT_C",
+    "defaultPrice": "2800",
+    "duration": "5-7 Săptămâni",
+    "theoryHours": 30,
+    "practiceHours": 30,
+    "vehicleImage": "/Photos/cat.C..jpg",
+    "description": "Destinat conducătorilor auto care doresc permis pentru vehicule destinate transportului de marfă cu masa peste 3.500 kg.",
+    "includes": [
+      "30 ore teorie mecanică & conducere preventivă",
+      "30 ore școală practică pe camion MAN / Mercedes",
+      "Pregătire atestat profesional marfă / agabaritic",
+      "Poligon dedicat pentru manevre de parcare și rampă",
+      "Consiliere dosar complet medical & psihologic",
+      "Rate de plată flexibile fără dobândă"
+    ]
+  },
+  {
+    "id": "cat-ce",
+    "title": "Categoria C+E (Ansamblu Vehicule)",
+    "badge": "Carieră Transport",
+    "priceKey": "CAT_CE",
+    "defaultPrice": "1800",
+    "duration": "3-4 Săptămâni",
+    "theoryHours": 10,
+    "practiceHours": 16,
+    "vehicleImage": "/Photos/cat.C..jpg",
+    "description": "Extinderea permisului pentru ansamblu de vehicule (camion + remorcă / semiremorcă). Ideal pentru transportatori internaționali.",
+    "includes": [
+      "Ore speciale de cuplare și manevrare remorcă",
+      "Pregătire pe vehicule grele moderne",
+      "Suport pentru obținerea atestatelor ARR",
+      "Instructori specializați pe transport marfă intern și TIR"
+    ]
+  },
+  {
+    "id": "extra",
+    "title": "Ore Suplimentare de Conducere",
+    "badge": "Perfecționare",
+    "priceKey": "EXTRA_LESSON",
+    "defaultPrice": "150",
+    "duration": "Ședințe de 2 ore",
+    "theoryHours": 0,
+    "practiceHours": 2,
+    "vehicleImage": "/Photos/cat.B.jpg",
+    "description": "Ședințe individuale de perfecționare pentru elevi sau șoferi care dețin deja permis și doresc mai multă încredere la volan.",
+    "includes": [
+      "Ședință practică intensivă în traficul aglomerat din Ploiești",
+      "Exersare parcări laterale, garări și mers în rampă",
+      "Trasee reale de examen DRPCIV",
+      "Programare flexibilă după orarul tău"
+    ]
+  },
+  {
+    "id": "instructor-course",
+    "title": "Curs Formare Instructor Auto",
+    "badge": "Carieră Didactică",
+    "priceKey": "INSTRUCTOR_COURSE",
+    "defaultPrice": "3500",
+    "duration": "8-10 Săptămâni",
+    "theoryHours": 90,
+    "practiceHours": 30,
+    "vehicleImage": "/Photos/Logo.png",
+    "description": "Devino instructor auto autorizat! Școala ABC Teodor oferă cursuri ATESTATE ARR de pregătire a cadrelor didactice auto.",
+    "includes": [
+      "Pregătire metodică și psihopedagogică",
+      "Stagiu practic alături de instructori seniori",
+      "Asistență completă pentru examenul ARR",
+      "Oportunitate directă de angajare în echipa ABC Teodor"
+    ]
+  }
+]

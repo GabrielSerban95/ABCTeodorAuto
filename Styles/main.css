@@ -18,11 +18,11 @@
 .slide:nth-child(odd) {
     align-self: end;
     text-align: end;
-    transition: all 2s;
+    transition: all 1s;
 }
 
 .slide:nth-child(even) {
-    transition: all 4s;
+    transition: all 2s;
 }
 
 .slide {

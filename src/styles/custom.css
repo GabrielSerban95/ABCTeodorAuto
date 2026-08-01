@@ -1,0 +1,198 @@
+/* Custom Styling for Școala Auto ABC Teodor */
+
+:root {
+  --primary-blue: #2563eb;
+  --primary-blue-hover: #1d4ed8;
+  --accent-amber: #f59e0b;
+  --accent-cyan: #06b6d4;
+  --bg-dark: #0b0f19;
+  --bg-card: #131b2e;
+  --bg-card-hover: #1a253e;
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --text-muted: #9ca3af;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── Typography Utilities (Bootstrap nu are fw-extrabold/fw-black) ─── */
+.fw-extrabold { font-weight: 800 !important; }
+.fw-black     { font-weight: 900 !important; }
+
+/* ─── Bootstrap spacing gaps Bootstrap nu suportă .5 ─── */
+.gap-1\.5 { gap: 0.375rem !important; }
+.gap-2\.5 { gap: 0.625rem !important; }
+.py-1\.5  { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+.py-2\.5  { padding-top: 0.625rem !important; padding-bottom: 0.625rem !important; }
+.px-2\.5  { padding-left: 0.625rem !important; padding-right: 0.625rem !important; }
+.px-3\.5  { padding-left: 0.875rem !important; padding-right: 0.875rem !important; }
+
+/* ─── Max-width utilities ─── */
+.max-w-2xl { max-width: 42rem; margin-left: auto; margin-right: auto; }
+.max-w-md  { max-width: 28rem; margin-left: auto; margin-right: auto; }
+
+/* ─── Shadow utilities ─── */
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5) !important; }
+
+/* ─── Hover text color ─── */
+.hover-text-warning:hover { color: #f59e0b !important; }
+
+/* ─── Transition (instead of Tailwind classes) ─── */
+.transition-nav { transition: all 0.3s ease; }
+
+/* ─── Text color utilities ─── */
+.text-gray-200 { color: #e5e7eb !important; }
+.text-gray-300 { color: #d1d5db !important; }
+.text-gray-400 { color: #9ca3af !important; }
+
+/* ─── Glassmorphism utility ─── */
+.glass-panel {
+  background: rgba(19, 27, 46, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+.glass-nav {
+  background: rgba(11, 15, 25, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Custom Gradients ─── */
+.text-gradient {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.bg-gradient-amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+/* ─── Card Hover Effects ─── */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+}
+
+/* ─── Hero Video Container ─── */
+.hero-video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero-video-wrapper video {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0.28;
+  filter: saturate(1.2) contrast(1.1);
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(11, 15, 25, 0.6) 0%, rgba(11, 15, 25, 0.95) 100%);
+  z-index: 1;
+}
+
+/* ─── Badges ─── */
+.badge-custom {
+  background: rgba(37, 99, 235, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.35rem 0.85rem;
+  border-radius: 50rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ─── Star filled icon (Lucide workaround) ─── */
+.fill-warning { fill: #fbbf24; }
+.fill-dark    { fill: #1f2937; }
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0b0f19; }
+::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+/* ─── Chat Widget ─── */
+.chat-window {
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 540px;
+  max-height: calc(100vh - 100px);
+}
+
+/* Hide scrollbar on quick replies strip */
+.chat-chips::-webkit-scrollbar { display: none; }
+
+/* ─── Booking Step Progress ─── */
+@media (max-width: 480px) {
+  .booking-step-label { display: none; }
+}
+
+/* ─── Responsive fixes ─── */
+@media (max-width: 576px) {
+  .chat-window {
+    width: calc(100vw - 16px);
+    height: 85vh;
+    max-height: 85vh;
+    border-radius: 1.5rem 1.5rem 0 0 !important;
+  }
+
+  .hero-section-inner {
+    padding-top: 5rem !important;
+  }
+}
