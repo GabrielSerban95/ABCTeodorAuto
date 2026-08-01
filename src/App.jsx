@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
@@ -11,11 +12,17 @@ import FAQSection from './components/FAQSection';
 import TestimonialsSection from './components/TestimonialsSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
+import LoginPage from './components/auth/LoginPage';
+import RegisterPage from './components/auth/RegisterPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import StudentDashboard from './components/student/StudentDashboard';
+import InstructorDashboard from './components/instructor/InstructorDashboard';
+import AdminDashboard from './components/admin/AdminDashboard';
+import PageNotFound from './components/shared/PageNotFound';
+import { ROUTES } from './constants/routes';
+import { ROLES } from './constants/roles';
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('main');
-  const [preselectedCategory, setPreselectedCategory] = useState('cat-b');
-
+function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselectedCategory }) {
   const handleOpenBooking = (catId) => {
     setActiveTab('main');
     if (catId) setPreselectedCategory(catId);
@@ -54,51 +61,57 @@ export default function App() {
 
   return (
     <div className="min-vh-100 d-flex flex-column text-white">
-      {/* Top Navbar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Main View vs Instructor Portal View */}
       {activeTab === 'main' ? (
         <main className="flex-grow-1">
-          {/* Hero Section */}
-          <Hero 
-            onOpenBooking={() => handleOpenBooking()} 
-            onOpenCourses={handleOpenCourses} 
-          />
-
-          {/* About Section */}
+          <Hero onOpenBooking={() => handleOpenBooking()} onOpenCourses={handleOpenCourses} />
           <AboutSection />
-
-          {/* Categories & Pricing */}
           <CategoriesSection onSelectCourseForBooking={handleOpenBooking} />
-
-          {/* Fleet & Instructors */}
           <FleetSection />
-
-          {/* Interactive Booking & Schedule Calendar */}
           <BookingCalendar preselectedCategory={preselectedCategory} />
-
-          {/* Testimonials */}
           <TestimonialsSection />
-
-          {/* FAQ */}
           <FAQSection />
-
-          {/* Contact & Map */}
           <ContactSection />
         </main>
       ) : (
-        /* Dedicated Instructor Portal View */
         <main className="flex-grow-1">
           <InstructorPortal />
         </main>
       )}
 
-      {/* Interactive AI Chatbot Widget */}
       <ChatWidget onOpenBooking={() => handleOpenBooking()} />
-
-      {/* Footer */}
       <Footer onNavigate={handleNavigate} />
     </div>
+  );
+}
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('main');
+  const [preselectedCategory, setPreselectedCategory] = useState('cat-b');
+  const location = useLocation();
+
+  return (
+    <>
+      <Routes>
+        <Route
+          path={ROUTES.HOME}
+          element={<PublicSite activeTab={activeTab} setActiveTab={setActiveTab} preselectedCategory={preselectedCategory} setPreselectedCategory={setPreselectedCategory} />}
+        />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+        <Route element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]} />}>
+          <Route path={ROUTES.DASHBOARD} element={<StudentDashboard />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]} />}>
+          <Route path={ROUTES.PORTAL} element={<InstructorDashboard />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
+          <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
+        </Route>
+        <Route path="/404" element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to={ROUTES.NOT_FOUND} replace state={{ from: location }} />} />
+      </Routes>
+    </>
   );
 }
