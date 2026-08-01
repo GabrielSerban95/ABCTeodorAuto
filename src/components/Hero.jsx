@@ -31,13 +31,13 @@ export default function Hero({ onOpenBooking, onOpenCourses }) {
             </div>
 
             {/* Main Headline */}
-            <h1 className="display-4 fw-black text-white mb-3 font-heading lh-sm">
+            <h1 className="display-4 fw-black text-white mb-3 font-heading lh-sm" style={{ letterSpacing: '-0.02em', lineHeight: 1.05 }}>
               {ENV.HERO_TITLE.split('ABC Teodor')[0]}
               <span className="text-gradient d-inline-block">ABC Teodor</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="lead text-gray-300 mb-4 me-lg-4 font-body" style={{ color: '#d1d5db', fontSize: '1.2rem' }}>
+            <p className="lead text-gray-300 mb-4 me-lg-4 font-body" style={{ color: '#d1d5db', fontSize: 'clamp(1rem, 1.1rem, 1.14rem)', lineHeight: 1.7 }}>
               {ENV.HERO_SUBTITLE}
             </p>
 
@@ -58,8 +58,7 @@ export default function Hero({ onOpenBooking, onOpenCourses }) {
             </div>
 
             {/* Call to Action Buttons */}
-            <div className="d-flex flex-wrap align-items-center gap-3">
-              
+            <div className="d-flex flex-wrap align-items-center hero-cta-stack">
               <button 
                 onClick={onOpenBooking}
                 className="btn btn-warning btn-lg rounded-pill px-4 py-3 fw-bold d-flex align-items-center gap-2 shadow-lg hover-lift text-dark"
@@ -75,22 +74,13 @@ export default function Hero({ onOpenBooking, onOpenCourses }) {
               >
                 Vezi Cursurile & Tarifele
               </button>
-
-              <a 
-                href={`tel:${ENV.PHONE_RAW}`}
-                className="btn btn-link text-warning text-decoration-none fw-semibold d-flex align-items-center gap-2 ms-2"
-              >
-                <PhoneCall size={18} />
-                <span>{ENV.PHONE}</span>
-              </a>
-
             </div>
 
           </div>
 
           {/* Right Side Visual Badge Card */}
           <div className="col-lg-5">
-            <div className="glass-panel p-4 p-md-5 border border-secondary shadow-2xl rounded-4 position-relative">
+            <div className="glass-panel p-4 p-md-5 border border-secondary shadow-2xl rounded-4 position-relative" style={{ transform: 'translateY(8px)' }}>
               
               {/* Card Header with Logo */}
               <div className="d-flex align-items-center gap-3 mb-4">
@@ -102,7 +92,7 @@ export default function Hero({ onOpenBooking, onOpenCourses }) {
                   onError={(e) => { e.target.src = '/Photos/Logo.svg'; }}
                 />
                 <div>
-                  <h4 className="fw-bold text-white mb-0 font-heading">Pregătire Auto Premium</h4>
+                  <h4 className="fw-bold text-site-heading mb-0 font-heading">Pregătire Auto Premium</h4>
                   <small className="text-warning">Permis Categoria B, C, C+E</small>
                 </div>
               </div>
@@ -143,10 +133,10 @@ export default function Hero({ onOpenBooking, onOpenCourses }) {
               </div>
 
               {/* Quick Info Box */}
-              <div className="mt-4 p-3 rounded-3 bg-primary bg-opacity-15 border border-primary border-opacity-30 d-flex align-items-center gap-3">
+              <div className="mt-4 p-3 rounded-3 bg-primary bg-opacity-15 border border-primary border-opacity-30 d-flex align-items-center gap-3" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>
                 <Award size={28} className="text-warning flex-shrink-0" />
                 <div className="text-start">
-                  <span className="fw-bold text-white d-block" style={{ fontSize: '0.9rem' }}>Punct de plecare flexibil</span>
+                  <span className="fw-bold text-site-heading d-block" style={{ fontSize: '0.9rem' }}>Punct de plecare flexibil</span>
                   <small className="text-gray-300" style={{ fontSize: '0.8rem' }}>Preluare din Ploiești de acasă sau de la locul de muncă/școală.</small>
                 </div>
               </div>

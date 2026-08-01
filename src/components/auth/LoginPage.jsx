@@ -1,21 +1,25 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginWithEmailAndPassword, loginWithGoogle } from '../../firebase/auth';
 import { useAuth } from '../../hooks/useAuth';
-import { ROUTES } from '../../constants/routes';
-import { ROLES } from '../../constants/roles';
+import { ROUTES, ROLE_DEFAULT_ROUTE } from '../../constants/routes';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const location = useLocation();
+  const { user, role, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  if (user) {
-    navigate(ROUTES.DASHBOARD);
-    return null;
-  }
+  const from = location.state?.from?.pathname;
+
+  useEffect(() => {
+    if (!loading && user) {
+      const destination = from || ROLE_DEFAULT_ROUTE[role] || ROUTES.DASHBOARD;
+      navigate(destination, { replace: true });
+    }
+  }, [loading, user, role, navigate, from]);
 
   const handleEmailLogin = async (event) => {
     event.preventDefault();
@@ -23,7 +27,6 @@ export default function LoginPage() {
 
     try {
       await loginWithEmailAndPassword(email, password);
-      navigate(ROUTES.DASHBOARD);
     } catch (err) {
       setError(err.message || 'Autentificarea a eșuat.');
     }
@@ -33,7 +36,6 @@ export default function LoginPage() {
     setError('');
     try {
       await loginWithGoogle();
-      navigate(ROUTES.DASHBOARD);
     } catch (err) {
       setError(err.message || 'Autentificarea Google a eșuat.');
     }

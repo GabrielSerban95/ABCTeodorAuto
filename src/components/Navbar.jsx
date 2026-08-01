@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ENV } from '../config/env';
-import { Phone, Calendar, UserCheck, Menu, X } from 'lucide-react';
+import { ROUTES, ROLE_DEFAULT_ROUTE } from '../constants/routes';
+import { useAuth } from '../hooks/useAuth';
+import { Calendar, Menu, X, LogIn, LogOut, LayoutDashboard } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab }) {
+export default function Navbar() {
+  const navigate = useNavigate();
+  const { user, logout, loading, role } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const dashboardRoute = ROLE_DEFAULT_ROUTE[role] || ROUTES.DASHBOARD;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,7 +22,6 @@ export default function Navbar({ activeTab, setActiveTab }) {
   }, []);
 
   const scrollToSection = (id) => {
-    setActiveTab('main');
     setMobileMenuOpen(false);
     setTimeout(() => {
       const element = document.getElementById(id);
@@ -37,8 +43,8 @@ export default function Navbar({ activeTab, setActiveTab }) {
         {/* Brand Logo & Name */}
         <div 
           className="d-flex align-items-center gap-2 me-3 flex-shrink-0 cursor-pointer" 
-          style={{ cursor: 'pointer' }}
-          onClick={() => { setActiveTab('main'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          style={{ cursor: 'pointer', padding: '0.2rem 0.4rem', borderRadius: '999px' }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <img 
             src="/Photos/Logo.png" 
@@ -111,32 +117,41 @@ export default function Navbar({ activeTab, setActiveTab }) {
 
         {/* Action Buttons */}
         <div className="d-none d-md-flex align-items-center gap-2 flex-shrink-0 ms-2">
-          {/* Quick Call Button */}
-          <a 
-            href={`tel:${ENV.PHONE_RAW}`} 
-            className="btn btn-outline-light btn-sm rounded-pill px-2.5 py-1.5 d-flex align-items-center gap-1.5 text-nowrap"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            <Phone size={13} className="text-warning flex-shrink-0" />
-            <span className="fw-semibold" style={{ fontSize: '0.8rem' }}>{ENV.PHONE}</span>
-          </a>
-
-          {/* Instructor Portal Access Button */}
-          <button 
-            onClick={() => {
-              setActiveTab(activeTab === 'portal' ? 'main' : 'portal');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`btn btn-sm rounded-pill px-3 py-1.5 d-flex align-items-center gap-1.5 fw-semibold text-nowrap ${
-              activeTab === 'portal' 
-                ? 'btn-warning text-dark' 
-                : 'btn-primary bg-gradient-primary border-0'
-            }`}
-            style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
-          >
-            <UserCheck size={14} className="flex-shrink-0" />
-            <span>{activeTab === 'portal' ? 'Înapoi la Site' : 'Portal Instructori'}</span>
-          </button>
+          {loading ? null : user ? (
+            <>
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm rounded-pill px-3 py-1.5 d-flex align-items-center gap-1.5 text-nowrap"
+                onClick={() => navigate(dashboardRoute)}
+                style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
+              >
+                <LayoutDashboard size={14} className="flex-shrink-0" />
+                <span>Contul meu</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1.5 d-flex align-items-center gap-1.5 text-nowrap"
+                onClick={async () => {
+                  await logout();
+                  navigate(ROUTES.HOME);
+                }}
+                style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
+              >
+                <LogOut size={14} className="flex-shrink-0" />
+                <span>Ieşire</span>
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary btn-sm rounded-pill px-3 py-1.5 d-flex align-items-center gap-1.5 text-nowrap"
+              onClick={() => navigate(ROUTES.LOGIN)}
+              style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
+            >
+              <LogIn size={14} className="flex-shrink-0" />
+              <span>Autentificare</span>
+            </button>
+          )}
         </div>
 
         {/* Mobile Hamburger Button — hidden on xl and up */}
@@ -186,24 +201,46 @@ export default function Navbar({ activeTab, setActiveTab }) {
             </button>
             <hr className="border-secondary my-1" />
             <div className="d-flex flex-column gap-2 pt-2">
-              <a 
-                href={`tel:${ENV.PHONE_RAW}`} 
-                className="btn btn-outline-light rounded-pill py-2 text-center d-flex align-items-center justify-content-center gap-2"
-              >
-                <Phone size={18} className="text-warning" /> Sună Acum: {ENV.PHONE}
-              </a>
-              <button 
-                onClick={() => {
-                  setActiveTab(activeTab === 'portal' ? 'main' : 'portal');
-                  setMobileMenuOpen(false);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+              {loading ? null : user ? (
+              <>
+                <button
+                  type="button"
+                  className="btn btn-primary bg-gradient-primary border-0 rounded-pill py-2 text-center d-flex align-items-center justify-content-center gap-2 fw-semibold"
+                  onClick={() => {
+                    navigate(dashboardRoute);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <LayoutDashboard size={18} />
+                  Contul meu
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary rounded-pill py-2 text-center d-flex align-items-center justify-content-center gap-2"
+                  onClick={async () => {
+                    await logout();
+                    navigate(ROUTES.HOME);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <LogOut size={18} />
+                  Ieşire
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
                 className="btn btn-primary bg-gradient-primary border-0 rounded-pill py-2 text-center d-flex align-items-center justify-content-center gap-2 fw-semibold"
+                onClick={() => {
+                  navigate(ROUTES.LOGIN);
+                  setMobileMenuOpen(false);
+                }}
               >
-                <UserCheck size={18} />
-                {activeTab === 'portal' ? 'Întoarcere la Pagina Principală' : 'Acces Portal Cadre Didactice'}
+                <LogIn size={18} />
+                Autentificare
               </button>
-            </div>
+            )}
+          </div>
           </div>
         </div>
       )}

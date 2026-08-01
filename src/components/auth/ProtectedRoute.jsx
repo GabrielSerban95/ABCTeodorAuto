@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import LoadingSpinner from '../shared/LoadingSpinner';
+import { ROUTES, ROLE_DEFAULT_ROUTE } from '../../constants/routes';
 
 export default function ProtectedRoute({ allowedRoles = [] }) {
   const { user, role, loading } = useAuth();
@@ -11,11 +12,12 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
   }
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    return <Navigate to="/" replace />;
+    const destination = ROLE_DEFAULT_ROUTE[role] || ROUTES.HOME;
+    return <Navigate to={destination} replace />;
   }
 
   return <Outlet />;

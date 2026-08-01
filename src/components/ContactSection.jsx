@@ -30,10 +30,10 @@ export default function ContactSection() {
           <span className="badge-custom badge-amber mb-2">
             <MapPin size={14} /> Contact & Locație Sediul ABC Teodor
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Ne Găsești În Ploiești Sau Ne Poți Scrie Online
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af' }}>
+          <p className="text-site-muted mt-2">
             Echipa noastră îți stă la dispoziție pentru orice detaliu sau pentru înscriere directă.
           </p>
         </div>
@@ -51,8 +51,8 @@ export default function ContactSection() {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h5 className="fw-bold text-white mb-1 font-heading">Sediul Nostru Central</h5>
-                    <p className="text-gray-300 font-body mb-2" style={{ color: '#d1d5db', fontSize: '0.9rem' }}>
+                    <h5 className="fw-bold text-site-heading mb-1 font-heading">Sediul Nostru Central</h5>
+                    <p className="text-site-body font-body mb-2" style={{ fontSize: '0.9rem' }}>
                       {ENV.ADDRESS}
                     </p>
                     <a 
@@ -74,8 +74,8 @@ export default function ContactSection() {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h5 className="fw-bold text-white mb-1 font-heading">Telefon & WhatsApp</h5>
-                    <p className="text-gray-300 font-body mb-2" style={{ color: '#d1d5db', fontSize: '0.9rem' }}>
+                    <h5 className="fw-bold text-site-heading mb-1 font-heading">Telefon & WhatsApp</h5>
+                    <p className="text-site-body font-body mb-2" style={{ fontSize: '0.9rem' }}>
                       Contactează-ne direct pentru informații rapide sau înscrieri.
                     </p>
                     <a 
@@ -95,8 +95,8 @@ export default function ContactSection() {
                     <Clock size={24} />
                   </div>
                   <div>
-                    <h5 className="fw-bold text-white mb-1 font-heading">Program Înscrieri & Secretariat</h5>
-                    <p className="text-gray-300 font-body mb-0" style={{ color: '#d1d5db', fontSize: '0.9rem' }}>
+                    <h5 className="fw-bold text-site-heading mb-1 font-heading">Program Înscrieri & Secretariat</h5>
+                    <p className="text-site-body font-body mb-0" style={{ fontSize: '0.9rem' }}>
                       {ENV.WORKING_HOURS}
                     </p>
                   </div>
@@ -110,17 +110,17 @@ export default function ContactSection() {
           <div className="col-lg-7">
             <div className="glass-panel p-4 p-md-5 border border-secondary border-opacity-50 rounded-4 shadow-2xl h-100">
               
-              <h4 className="fw-bold text-white mb-2 font-heading d-flex align-items-center gap-2">
+              <h4 className="fw-bold text-site-heading mb-2 font-heading d-flex align-items-center gap-2">
                 <MessageSquare className="text-warning" size={22} /> Trimite-ne Un Mesaj
               </h4>
-              <p className="text-gray-400 mb-4" style={{ fontSize: '0.9rem' }}>
+              <p className="text-site-muted mb-4" style={{ fontSize: '0.9rem' }}>
                 Completează formularul de mai jos și un reprezentant te va contacta în cel mai scurt timp:
               </p>
 
               {submitted ? (
                 <div className="alert alert-success p-4 rounded-3 text-center my-4">
                   <CheckCircle2 size={40} className="mb-2 text-success" />
-                  <h5 className="fw-bold mb-1 text-white">Mesajul Tău A Fost Trimis!</h5>
+                  <h5 className="fw-bold mb-1 text-site-heading">Mesajul Tău A Fost Trimis!</h5>
                   <p className="mb-0 text-gray-200 small">Îți mulțumim! Te vom contacta în maxim 24 de ore lucrătoare.</p>
                 </div>
               ) : (

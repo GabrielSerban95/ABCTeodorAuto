@@ -12,10 +12,10 @@ export default function TestimonialsSection() {
           <span className="badge-custom badge-amber mb-2">
             <ThumbsUp size={14} /> Recenzii & Păreri Elevi
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Ce Spun Absolvenții Școlii ABC Teodor
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af' }}>
+          <p className="text-site-muted mt-2">
             Peste 1500+ elevi au obținut permisul de conducere cu ajutorul echipei noastre din Ploiești.
           </p>
         </div>
@@ -45,7 +45,7 @@ export default function TestimonialsSection() {
 
                 {/* Author Info */}
                 <div className="pt-3 border-top border-secondary border-opacity-40">
-                  <h6 className="fw-bold text-white mb-0 font-heading">{t.name}</h6>
+                  <h6 className="fw-bold text-site-heading mb-0 font-heading">{t.name}</h6>
                   <small className="text-warning d-block" style={{ fontSize: '0.8rem' }}>{t.role}</small>
                 </div>
               </div>

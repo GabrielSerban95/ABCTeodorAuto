@@ -18,10 +18,10 @@ export default function CategoriesSection({ onSelectCourseForBooking }) {
           <span className="badge-custom mb-2">
             <Tag size={14} /> Tarife Transparente 2026
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Cursuri Auto & Oferte Școlarizare
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af', maxWidth: '650px', margin: '0 auto' }}>
+          <p className="text-site-muted mt-2" style={{ maxWidth: '650px', margin: '0 auto' }}>
             Alege categoria potrivită pentru tine. Toate cursurile includ ore de teorie, practica pe traseu și pregătirea dosarului de examen.
           </p>
 
@@ -69,7 +69,7 @@ export default function CategoriesSection({ onSelectCourseForBooking }) {
                 <div>
                   {/* Course Title + Badge */}
                   <div className="mb-2">
-                    <h3 className="fw-bold text-white mb-1 font-heading" style={{ fontSize: '1.2rem', lineHeight: '1.35' }}>
+                    <h3 className="fw-bold text-site-heading mb-1 font-heading" style={{ fontSize: '1.2rem', lineHeight: '1.35' }}>
                       {course.title}
                     </h3>
                     {course.badge && (
@@ -87,7 +87,7 @@ export default function CategoriesSection({ onSelectCourseForBooking }) {
                     <span className="text-gray-400" style={{ fontSize: '0.85rem' }}>/ Curs Complet</span>
                   </div>
 
-                  <p className="text-gray-300 font-body mb-4" style={{ color: '#d1d5db', fontSize: '0.9rem' }}>
+                  <p className="text-site-body font-body mb-4" style={{ fontSize: '0.9rem' }}>
                     {course.description}
                   </p>
 

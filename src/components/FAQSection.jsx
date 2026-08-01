@@ -18,10 +18,10 @@ export default function FAQSection() {
           <span className="badge-custom badge-amber mb-2">
             <HelpCircle size={14} /> Întrebări Frecvente
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Tot Ce Trebuie Să Știi Înainte De Înscriere
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af' }}>
+          <p className="text-site-muted mt-2">
             Răspunsuri la cele mai întâlnite nedumeriri despre scoala auto, acte necesare și procedura de examinare DRPCIV.
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function FAQSection() {
                     className="glass-panel border border-secondary border-opacity-50 rounded-4 overflow-hidden"
                   >
                     <button 
-                      className="w-100 p-4 text-start bg-transparent border-0 d-flex justify-content-between align-items-center gap-3 text-white fw-bold font-heading"
+                      className="w-100 p-4 text-start bg-transparent border-0 d-flex justify-content-between align-items-center gap-3 text-site-heading fw-bold font-heading"
                       style={{ fontSize: '1.05rem', cursor: 'pointer' }}
                       onClick={() => toggleIndex(idx)}
                     >

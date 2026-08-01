@@ -12,10 +12,10 @@ export default function FleetSection() {
           <span className="badge-custom badge-amber mb-2">
             <Car size={14} /> Flota & Echipa Noastră
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Vehicule Moderne & Instructori Dedicați
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af', maxWidth: '650px', margin: '0 auto' }}>
+          <p className="text-site-muted mt-2" style={{ maxWidth: '650px', margin: '0 auto' }}>
             Toate vehiculele sunt dotate cu dublă comandă omologată RAR, climatizare automatizată și sisteme de siguranță de ultimă generație.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function FleetSection() {
                     <span className="badge-custom badge-amber mb-2" style={{ fontSize: '0.75rem' }}>
                       {item.category}
                     </span>
-                    <h5 className="fw-bold text-white mb-3 font-heading">
+                    <h5 className="fw-bold text-site-heading mb-3 font-heading">
                       {item.name}
                     </h5>
 
@@ -96,11 +96,11 @@ export default function FleetSection() {
                     </span>
                   </div>
 
-                  <h5 className="fw-bold text-white mb-1 font-heading">{inst.name}</h5>
+                  <h5 className="fw-bold text-site-heading mb-1 font-heading">{inst.name}</h5>
                   <small className="text-warning d-block fw-semibold mb-2">{inst.role}</small>
                   <span className="badge-custom mb-3" style={{ fontSize: '0.75rem' }}>{inst.experience}</span>
 
-                  <p className="text-gray-300 font-body mb-3" style={{ color: '#d1d5db', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                  <p className="text-site-body font-body mb-3" style={{ fontSize: '0.85rem', lineHeight: '1.5' }}>
                     "{inst.bio}"
                   </p>
                 </div>

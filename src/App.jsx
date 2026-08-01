@@ -6,7 +6,6 @@ import AboutSection from './components/AboutSection';
 import CategoriesSection from './components/CategoriesSection';
 import FleetSection from './components/FleetSection';
 import BookingCalendar from './components/BookingCalendar';
-import InstructorPortal from './components/InstructorPortal';
 import ChatWidget from './components/ChatWidget';
 import FAQSection from './components/FAQSection';
 import TestimonialsSection from './components/TestimonialsSection';
@@ -22,9 +21,8 @@ import PageNotFound from './components/shared/PageNotFound';
 import { ROUTES } from './constants/routes';
 import { ROLES } from './constants/roles';
 
-function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselectedCategory }) {
+function PublicSite({ preselectedCategory, setPreselectedCategory }) {
   const handleOpenBooking = (catId) => {
-    setActiveTab('main');
     if (catId) setPreselectedCategory(catId);
     setTimeout(() => {
       const element = document.getElementById('programare');
@@ -35,7 +33,6 @@ function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselect
   };
 
   const handleOpenCourses = () => {
-    setActiveTab('main');
     setTimeout(() => {
       const element = document.getElementById('cursuri');
       if (element) {
@@ -45,12 +42,6 @@ function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselect
   };
 
   const handleNavigate = (id) => {
-    if (id === 'portal-instructori') {
-      setActiveTab('portal');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    setActiveTab('main');
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
@@ -61,25 +52,17 @@ function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselect
 
   return (
     <div className="min-vh-100 d-flex flex-column text-white">
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      {activeTab === 'main' ? (
-        <main className="flex-grow-1">
-          <Hero onOpenBooking={() => handleOpenBooking()} onOpenCourses={handleOpenCourses} />
-          <AboutSection />
-          <CategoriesSection onSelectCourseForBooking={handleOpenBooking} />
-          <FleetSection />
-          <BookingCalendar preselectedCategory={preselectedCategory} />
-          <TestimonialsSection />
-          <FAQSection />
-          <ContactSection />
-        </main>
-      ) : (
-        <main className="flex-grow-1">
-          <InstructorPortal />
-        </main>
-      )}
-
+      <Navbar />
+      <main className="flex-grow-1">
+        <Hero onOpenBooking={() => handleOpenBooking()} onOpenCourses={handleOpenCourses} />
+        <AboutSection />
+        <CategoriesSection onSelectCourseForBooking={handleOpenBooking} />
+        <FleetSection />
+        <BookingCalendar preselectedCategory={preselectedCategory} />
+        <TestimonialsSection />
+        <FAQSection />
+        <ContactSection />
+      </main>
       <ChatWidget onOpenBooking={() => handleOpenBooking()} />
       <Footer onNavigate={handleNavigate} />
     </div>
@@ -87,7 +70,6 @@ function PublicSite({ activeTab, setActiveTab, preselectedCategory, setPreselect
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('main');
   const [preselectedCategory, setPreselectedCategory] = useState('cat-b');
   const location = useLocation();
 
@@ -96,7 +78,7 @@ export default function App() {
       <Routes>
         <Route
           path={ROUTES.HOME}
-          element={<PublicSite activeTab={activeTab} setActiveTab={setActiveTab} preselectedCategory={preselectedCategory} setPreselectedCategory={setPreselectedCategory} />}
+          element={<PublicSite preselectedCategory={preselectedCategory} setPreselectedCategory={setPreselectedCategory} />}
         />
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.REGISTER} element={<RegisterPage />} />

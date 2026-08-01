@@ -1,5 +1,5 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { onAuthStateChange } from '../firebase/auth';
+import { onAuthStateChange, logout } from '../firebase/auth';
 import { createStudentProfile, createUserProfile, getDocument, getStudentDocRef, getUserDocRef } from '../firebase/firestore';
 import { ROLES } from '../constants/roles';
 
@@ -48,9 +48,11 @@ export function AuthProvider({ children }) {
     profile,
     role,
     loading,
+    logout,
     isStudent: role === ROLES.STUDENT,
     isInstructor: role === ROLES.INSTRUCTOR,
     isAdmin: role === ROLES.ADMIN,
+    isAuthenticated: Boolean(user),
   }), [user, profile, role, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

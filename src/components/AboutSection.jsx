@@ -44,10 +44,10 @@ export default function AboutSection() {
           <span className="badge-custom badge-amber mb-2">
             <Sparkles size={14} /> De Ce Să Alegi ABC Teodor
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Experiența Ta În Învățarea Conducerii Auto
           </h2>
-          <p className="text-gray-400 mt-2 font-body" style={{ color: '#9ca3af', maxWidth: '700px', margin: '0 auto' }}>
+          <p className="text-site-muted mt-2 font-body" style={{ maxWidth: '700px', margin: '0 auto' }}>
             La Școala Auto ABC Teodor transformăm emoțiile de la volan în plăcerea de a conduce în siguranță. Iată pilonii noștri de excelență:
           </p>
         </div>
@@ -61,10 +61,10 @@ export default function AboutSection() {
                   <div className="p-3 rounded-3 bg-dark bg-opacity-75 d-inline-block mb-3 border border-secondary">
                     {item.icon}
                   </div>
-                  <h4 className="fw-bold text-white mb-2 font-heading" style={{ fontSize: '1.15rem' }}>
+                  <h4 className="fw-bold text-site-heading mb-2 font-heading" style={{ fontSize: '1.15rem' }}>
                     {item.title}
                   </h4>
-                  <p className="text-gray-300 font-body mb-0" style={{ color: '#d1d5db', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                  <p className="text-site-body font-body mb-0" style={{ fontSize: '0.92rem', lineHeight: '1.6' }}>
                     {item.text}
                   </p>
                 </div>

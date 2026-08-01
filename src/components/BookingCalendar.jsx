@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { COURSES, INSTRUCTORS } from '../data/mockData';
 import { ENV } from '../config/env';
+import { useAuth } from '../hooks/useAuth';
+import { createBooking } from '../firebase/firestore';
 import confetti from 'canvas-confetti';
 import { Calendar as CalendarIcon, Clock, User, Phone, Mail, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Ticket } from 'lucide-react';
 
@@ -22,6 +24,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
   });
   const [bookingConfirmed, setBookingConfirmed] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const { user } = useAuth();
 
   const availableTimeSlots = [
     '08:00 - 10:00',
@@ -32,23 +35,25 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
     '18:00 - 20:00'
   ];
 
-  const handleCreateBooking = (e) => {
+  const handleCreateBooking = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
+
     if (!formData.name.trim() || !formData.phone.trim()) {
       setErrorMsg('Vă rugăm să completați Numele și Numărul de Telefon.');
       return;
     }
 
     const selectedCourseObj = COURSES.find(c => c.id === categoryId);
-    const selectedInstructorObj = instructorId === 'any' 
+    const selectedInstructorObj = instructorId === 'any'
       ? { id: 'inst-1', name: 'Teodor Popescu (Atribuit)' }
       : INSTRUCTORS.find(i => i.id === instructorId);
 
-    const newBooking = {
-      id: 'BK-' + Math.floor(1000 + Math.random() * 9000),
+    const bookingPayload = {
+      studentId: user?.uid || null,
       studentName: formData.name,
       studentPhone: formData.phone,
-      studentEmail: formData.email || 'Nespecificat',
+      studentEmail: formData.email || user?.email || 'Nespecificat',
       instructorId: selectedInstructorObj.id,
       instructorName: selectedInstructorObj.name,
       category: categoryId,
@@ -57,27 +62,26 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
       time: selectedTime,
       location: 'Sediul ABC Teodor - Ploiești',
       status: 'in_asteptare',
-      createdDate: new Date().toISOString(),
-      notes: formData.notes || 'Programare creată online de client'
+      notes: formData.notes || 'Programare creată online de client',
     };
 
-    // Save to local storage
-    const existing = JSON.parse(localStorage.getItem('abc_bookings') || '[]');
-    const updated = [newBooking, ...existing];
-    localStorage.setItem('abc_bookings', JSON.stringify(updated));
-
-    setBookingConfirmed(newBooking);
-    if (onBookingCreated) onBookingCreated(newBooking);
-
-    // Confetti effect
     try {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      const createdBooking = await createBooking(bookingPayload);
+      setBookingConfirmed(createdBooking);
+      if (onBookingCreated) onBookingCreated(createdBooking);
+
+      try {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } catch (err) {
+        console.log('Confetti trigger', err);
+      }
     } catch (err) {
-      console.log('Confetti trigger', err);
+      console.error('Booking create error:', err);
+      setErrorMsg('A apărut o eroare la crearea programării. Încearcă din nou.');
     }
   };
 
@@ -90,10 +94,10 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
           <span className="badge-custom badge-amber mb-2">
             <CalendarIcon size={14} /> Sistem Online de Programări Ore
           </span>
-          <h2 className="display-6 fw-extrabold text-white font-heading">
+          <h2 className="display-6 fw-extrabold text-site-heading font-heading">
             Programează Orele Tale de Conducere
           </h2>
-          <p className="text-gray-400 mt-2" style={{ color: '#9ca3af' }}>
+          <p className="text-site-muted mt-2">
             Alege ziua, ora și instructorul preferat. Programarea ta va fi înregistrată instant în calendarul școlii.
           </p>
         </div>
@@ -131,7 +135,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                   {/* STEP 1: Category & Instructor Selection */}
                   {step === 1 && (
                     <div>
-                      <h5 className="fw-bold text-white mb-3 font-heading">Alege Categoria & Instructorul:</h5>
+                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Alege Categoria & Instructorul:</h5>
                       
                       <div className="mb-4">
                         <label className="form-label text-gray-300 small fw-semibold">Selectează Categoria Auto:</label>
@@ -189,7 +193,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                   {/* STEP 2: Date & Time Slot Selection */}
                   {step === 2 && (
                     <div>
-                      <h5 className="fw-bold text-white mb-3 font-heading">Alege Data și Ora de Conducere:</h5>
+                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Alege Data și Ora de Conducere:</h5>
 
                       <div className="row g-4 mb-4">
                         <div className="col-md-6">
@@ -246,7 +250,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                   {/* STEP 3: Student Details & Final Confirmation */}
                   {step === 3 && (
                     <form onSubmit={handleCreateBooking}>
-                      <h5 className="fw-bold text-white mb-3 font-heading">Datele Tale de Contact:</h5>
+                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Datele Tale de Contact:</h5>
 
                       <div className="row g-3 mb-4">
                         <div className="col-md-6">
@@ -341,7 +345,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                     <CheckCircle2 size={48} />
                   </div>
 
-                  <h3 className="fw-extrabold text-white font-heading mb-1">
+                  <h3 className="fw-extrabold text-site-heading font-heading mb-1">
                     Programare Înregistrată cu Succes!
                   </h3>
                   <p className="text-gray-300 mb-4" style={{ color: '#d1d5db' }}>

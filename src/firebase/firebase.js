@@ -13,7 +13,24 @@ const firebaseConfig = {
   measurementId: ENV.FIREBASE.MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const hasFirebaseConfig = Boolean(
+  ENV.FIREBASE.API_KEY &&
+  ENV.FIREBASE.AUTH_DOMAIN &&
+  ENV.FIREBASE.PROJECT_ID &&
+  ENV.FIREBASE.APP_ID
+);
+
+let app = null;
+let auth = null;
+let db = null;
+
+if (hasFirebaseConfig) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+  console.warn('Firebase config is missing. Auth and Firestore features will stay disabled until .env is configured.');
+}
+
+export { auth, db, hasFirebaseConfig };
 export default app;

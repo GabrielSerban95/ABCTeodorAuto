@@ -1,16 +1,28 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { registerWithEmailAndPassword } from '../../firebase/auth';
 import { createStudentProfile, createUserProfile } from '../../firebase/firestore';
+import { useAuth } from '../../hooks/useAuth';
 import { ROLES } from '../../constants/roles';
-import { ROUTES } from '../../constants/routes';
+import { ROUTES, ROLE_DEFAULT_ROUTE } from '../../constants/routes';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, role, loading } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const from = location.state?.from?.pathname;
+
+  useEffect(() => {
+    if (!loading && user) {
+      const destination = from || ROLE_DEFAULT_ROUTE[role] || ROUTES.DASHBOARD;
+      navigate(destination, { replace: true });
+    }
+  }, [loading, user, role, navigate, from]);
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -20,7 +32,6 @@ export default function RegisterPage() {
       const { user } = await registerWithEmailAndPassword(email, password);
       await createUserProfile(user, ROLES.STUDENT);
       await createStudentProfile(user, { name });
-      navigate(ROUTES.DASHBOARD);
     } catch (err) {
       setError(err.message || 'Înregistrarea a eșuat.');
     }
