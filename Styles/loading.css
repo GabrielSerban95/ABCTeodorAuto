@@ -14,7 +14,9 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 1;
-  transition: opacity 2s ease-out;
+  transition: opacity .5s ease-out;
+  z-index: 100;
+
 }
 
 .loading-circle {
@@ -31,6 +33,7 @@ body {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -45,7 +48,7 @@ body {
 }
 
 #loading-screen .loaded {
-  opacity:0;
+  opacity: 0;
 }
 
 #loading-screen .loaded img {

@@ -1,126 +1,75 @@
-$(document).ready(function() {
-   
-    
+$(document).ready(function () {
+    //////////////////////
+    /// Scroll fadeIn  ///
+    /// and fadeOut    ///
+    //////////////////////
 
+    $(window).scroll(function () {
+        // Ajustează înălțimea minimă a header-ului în funcție de poziția de scroll
+        if ($(window).width() < 768) {
+            $("header").css("max-height", ($(window).scrollTop() > 50) ? 150 : 200);
 
+            // Definirea elementelor și a condițiilor specifice pentru fiecare
+            var scrollSections = [
+                { selector: ".page1", start: 0, end: 18 },
+                { selector: ".page2", start: 18, end: 36 },
+                { selector: ".page3", start: 36, end: 54 },
+                { selector: ".page4", start: 54, end: Infinity } // Infinity pentru a acoperi cazul când scroll-ul depășește 54
+            ];
+        }
+        else {
+            $("header").css("min-height", ($(window).scrollTop() > 50) ? 150 : 300);
+            var scrollSections = [
+                { selector: ".page1", start: 0, end: 3 },
+                { selector: ".page2", start: 3, end: 6 },
+                { selector: ".page3", start: 6, end: 9 },
+                { selector: ".page4", start: 9, end: Infinity } // Infinity pentru a acoperi cazul când scroll-ul depășește 9
+            ];
+        }
 
+        var distanceFromTop = $(window).scrollTop();
+        // Iterează prin fiecare secțiune și setează opacitatea corespunzător
+        for (var i = 0; i < scrollSections.length; i++) {
+            var section = scrollSections[i];
+            var opacity = (distanceFromTop / 100 >= section.start && distanceFromTop / 100 <= section.end) ? 1 : 0;
+            var translateX = (distanceFromTop / 100 >= section.start && distanceFromTop / 100 < section.end) ? 1 : 0;
+            $(section.selector).css("opacity", opacity);
 
-
-
-
-                //////////////////////
-                /// Scroll fadeIn  ///
-                /// and fadeOut at ///
-                ///     100px      ///
-                //////////////////////
-
-                var lastVisiblePage = 0; // Adaugă această variabilă globală
-var isScrollingUp = false; // Adaugă o variabilă care să țină evidența direcției de scroll
-
-var timer;
-
-$(window).scroll(function() {
-    var scrollTop = $(this).scrollTop();
-    var windowHeight = $(window).height();
-
-    // Definește marginile pentru fiecare page (25% în sus și 25% în jos)
-    var marginPercentage = 0.25;
-    var pageLimits = [];
-
-    // Calculează limitele pentru fiecare page
-    for (var i = 0; i <= 5; i++) {
-        var topLimit = i * (windowHeight * (1 - marginPercentage));
-        var bottomLimit = (i + 1) * (windowHeight * (1 - marginPercentage));
-
-        pageLimits.push({ top: topLimit, bottom: bottomLimit });
-    }
-
-    // Anulează timer-ul anterior pentru a evita executarea acțiunii multiple ori de câte ori utilizatorul face scroll
-    clearTimeout(timer);
-
-    // Setează un nou timer pentru a evalua pagina corespunzătoare după 100ms de la ultimul eveniment de scroll
-    timer = setTimeout(function() {
-        // Iterează prin limitele paginilor
-        for (var i = 0; i <= 5; i++) {
-            var currentPageLimit = pageLimits[i];
-            var nextPageLimit = pageLimits[i + 1];
-
-            // Află dacă scrollTop este între limitele curente ale paginii
-            if (scrollTop >= currentPageLimit.top && scrollTop < nextPageLimit.top) {
-                // Verifică dacă pagina curentă este diferită de ultima pagină vizibilă
-                if (i + 1 !== lastVisiblePage) {
-                    // Ascunde toate slide-urile
-                    $('.slide').addClass('hidden');
-
-                    // Afișează slide-urile pentru pagina curentă
-                    $('.page' + (i + 1) + ' .slide').removeClass('hidden');
-
-                    // Actualizează ultima pagină vizibilă
-                    lastVisiblePage = i + 1;
-                }
-
-                // Verifică direcția de scroll
-                if (isScrollingUp) {
-                    // Dacă se face scroll în sus, actualizează ultima pagină vizibilă
-                    lastVisiblePage = i + 1;
-                }
-
-                // Ieși din buclă după găsirea paginii corespunzătoare
-                break;
+            // console.log((parseInt(distanceFromTop / 72) / 4) + "%");
+            if (translateX == 1) {
+                $(section.selector).css("transform", "translate(" + 0 + ")");
+            }
+            else {
+                $(section.selector).css("transform", "translate(" + -100 + "%)");
             }
         }
-    }, 100);
-});
-
-// Adaugă un event listener pentru a detecta direcția de scroll
-var lastScrollTop = 0;
-
-$(window).on('scroll', function() {
-    var currentScrollTop = $(this).scrollTop();
-    isScrollingUp = currentScrollTop < lastScrollTop;
-    lastScrollTop = currentScrollTop;
-});
-
-
-              
-              
-              
-              
+    })
 
 
 
-
-
-
-                //////////////////////
-                ///  Social Media  ///
-                //////////////////////
-    $('#phone').mouseenter(function() {
+    //////////////////////
+    ///  Social Media  ///
+    //////////////////////
+    $('#phone').mouseenter(function () {
         $(this).addClass('fa-bounce');
     });
-    $('#phone').mouseleave(function() {
-        $(this).removeClass('fa-bounce');
-    });
-    
-    
-    $('#facebook').mouseenter(function() {
-        $(this).addClass('fa-bounce');
-    });
-    $('#facebook').mouseleave(function() {
-        $(this).removeClass('fa-bounce');
-    });
-
-    $('#instagram').mouseenter(function() {
-        $(this).addClass('fa-bounce');
-    });
-    $('#instagram').mouseleave(function() {
+    $('#phone').mouseleave(function () {
         $(this).removeClass('fa-bounce');
     });
 
 
+    $('#facebook').mouseenter(function () {
+        $(this).addClass('fa-bounce');
+    });
+    $('#facebook').mouseleave(function () {
+        $(this).removeClass('fa-bounce');
+    });
 
-
-
-
+    $('#instagram').mouseenter(function () {
+        $(this).addClass('fa-bounce');
+    });
+    $('#instagram').mouseleave(function () {
+        $(this).removeClass('fa-bounce');
+    });
 
 })
