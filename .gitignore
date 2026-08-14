@@ -1,1 +1,38 @@
-node_modules
+# Dependențe
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+
+# Fișiere locale de mediu
+.env
+.env.local
+.env.*.local
+
+# Loguri
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editoare / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Sistem de operare
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+.eslintcache
+*.tsbuildinfo
