@@ -25,11 +25,17 @@ let auth = null;
 let db = null;
 
 if (hasFirebaseConfig) {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (initErr) {
+    console.error('Eroare la inițializarea Firebase:', initErr);
+  }
 } else {
-  console.warn('Firebase config is missing. Auth and Firestore features will stay disabled until .env is configured.');
+  console.warn(
+    'Firebase config is missing or incomplete in .env. Asigură-te că variabilele încep cu VITE_ și că ai repornit dev serverul (npm run dev).'
+  );
 }
 
 export { auth, db, hasFirebaseConfig };

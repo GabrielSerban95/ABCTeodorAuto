@@ -11,7 +11,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "canvas-confetti": "^1.9.4",
-    "firebase": "^12.17.0",
+    "firebase": "^12.17.1",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -23,6 +23,6 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
-    "vite": "^5.4.10"
+    "vite": "^8.2.1"
   }
 }

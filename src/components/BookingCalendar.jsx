@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { COURSES, INSTRUCTORS } from '../data/mockData';
 import { ENV } from '../config/env';
 import { useAuth } from '../hooks/useAuth';
 import { createBooking } from '../firebase/firestore';
+import { ROUTES } from '../constants/routes';
 import confetti from 'canvas-confetti';
-import { Calendar as CalendarIcon, Clock, User, Phone, Mail, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Ticket } from 'lucide-react';
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  User,
+  Phone,
+  Mail,
+  CheckCircle2,
+  AlertCircle,
+  ArrowRight,
+  ShieldCheck,
+  Ticket,
+  Lock,
+  LogIn,
+  UserPlus,
+  LayoutDashboard,
+} from 'lucide-react';
 
 export default function BookingCalendar({ preselectedCategory, onBookingCreated }) {
+  const navigate = useNavigate();
+  const { user, profile, isAuthenticated } = useAuth();
+
   const [step, setStep] = useState(1);
   const [categoryId, setCategoryId] = useState(preselectedCategory || 'cat-b');
   const [instructorId, setInstructorId] = useState('any');
@@ -20,11 +40,30 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
     name: '',
     phone: '',
     email: '',
-    notes: ''
+    notes: '',
   });
   const [bookingConfirmed, setBookingConfirmed] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
-  const { user } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+
+  // Auto-fill student data from authenticated account
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || profile?.name || user.displayName || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || profile?.phone || '',
+      }));
+    }
+  }, [user, profile]);
+
+  // Update category when prop changes
+  useEffect(() => {
+    if (preselectedCategory) {
+      setCategoryId(preselectedCategory);
+    }
+  }, [preselectedCategory]);
 
   const availableTimeSlots = [
     '08:00 - 10:00',
@@ -32,28 +71,36 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
     '12:00 - 14:00',
     '14:00 - 16:00',
     '16:00 - 18:00',
-    '18:00 - 20:00'
+    '18:00 - 20:00',
   ];
 
   const handleCreateBooking = async (e) => {
     e.preventDefault();
     setErrorMsg('');
 
+    if (!isAuthenticated) {
+      setErrorMsg('Trebuie să fii conectat în contul de elev pentru a finaliza programarea.');
+      return;
+    }
+
     if (!formData.name.trim() || !formData.phone.trim()) {
       setErrorMsg('Vă rugăm să completați Numele și Numărul de Telefon.');
       return;
     }
 
-    const selectedCourseObj = COURSES.find(c => c.id === categoryId);
-    const selectedInstructorObj = instructorId === 'any'
-      ? { id: 'inst-1', name: 'Teodor Popescu (Atribuit)' }
-      : INSTRUCTORS.find(i => i.id === instructorId);
+    const selectedCourseObj = COURSES.find((c) => c.id === categoryId);
+    const selectedInstructorObj =
+      instructorId === 'any'
+        ? INSTRUCTORS[0]
+          ? { id: INSTRUCTORS[0].id, name: `${INSTRUCTORS[0].name} (Atribuit)` }
+          : { id: 'inst-1', name: 'Teodor Popescu (Atribuit)' }
+        : INSTRUCTORS.find((i) => i.id === instructorId) || { id: 'inst-1', name: 'Instructor ABC' };
 
     const bookingPayload = {
       studentId: user?.uid || null,
-      studentName: formData.name,
-      studentPhone: formData.phone,
-      studentEmail: formData.email || user?.email || 'Nespecificat',
+      studentName: formData.name.trim(),
+      studentPhone: formData.phone.trim(),
+      studentEmail: formData.email.trim() || user?.email || 'Nespecificat',
       instructorId: selectedInstructorObj.id,
       instructorName: selectedInstructorObj.name,
       category: categoryId,
@@ -62,8 +109,10 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
       time: selectedTime,
       location: 'Sediul ABC Teodor - Ploiești',
       status: 'in_asteptare',
-      notes: formData.notes || 'Programare creată online de client',
+      notes: formData.notes?.trim() || 'Programare creată online de elev',
     };
+
+    setSubmitting(true);
 
     try {
       const createdBooking = await createBooking(bookingPayload);
@@ -74,14 +123,16 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
         confetti({
           particleCount: 100,
           spread: 70,
-          origin: { y: 0.6 }
+          origin: { y: 0.6 },
         });
       } catch (err) {
         console.log('Confetti trigger', err);
       }
     } catch (err) {
       console.error('Booking create error:', err);
-      setErrorMsg('A apărut o eroare la crearea programării. Încearcă din nou.');
+      setErrorMsg('A apărut o eroare la crearea programării. Verificați conexiunea și încercați din nou.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -102,12 +153,59 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
           </p>
         </div>
 
-        {/* Booking Card */}
+        {/* Booking Card Container */}
         <div className="row justify-content-center">
           <div className="col-lg-10">
             <div className="glass-panel p-4 p-md-5 border border-secondary border-opacity-50 rounded-4 shadow-2xl">
               
-              {!bookingConfirmed ? (
+              {/* IF USER IS NOT LOGGED IN: SHOW SECURE STUDENT LOCK GATE */}
+              {!isAuthenticated ? (
+                <div className="text-center py-4 py-md-5">
+                  <div className="d-inline-flex p-3 rounded-circle bg-warning bg-opacity-15 text-warning mb-3 border border-warning border-opacity-30 shadow-sm">
+                    <Lock size={44} />
+                  </div>
+
+                  <span className="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30 d-block mx-auto mb-2" style={{ width: 'fit-content' }}>
+                    🔒 Acces Rezervat Elevilor Înscriși
+                  </span>
+
+                  <h3 className="h4 fw-extrabold text-white font-heading mb-3">
+                    Autentifică-te pentru a programa ore de conducere
+                  </h3>
+
+                  <p className="text-muted mb-4 max-w-lg mx-auto" style={{ maxWidth: 580, margin: '0 auto', fontSize: '0.95rem' }}>
+                    Pentru a garanta siguranța calendarului și alocarea corectă a instructorilor, programările online sunt active exclusiv pentru elevii școlii auto. Conectează-te în contul tău sau creează un cont folosind <strong>codul de înscriere</strong> primit de la profesor.
+                  </p>
+
+                  <div className="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                    <button
+                      onClick={() => navigate(ROUTES.LOGIN)}
+                      className="btn btn-warning rounded-pill px-4 py-2.5 fw-bold text-dark d-flex align-items-center gap-2 shadow"
+                    >
+                      <LogIn size={18} />
+                      <span>Autentificare Elev</span>
+                    </button>
+
+                    <button
+                      onClick={() => navigate(ROUTES.REGISTER)}
+                      className="btn btn-outline-light rounded-pill px-4 py-2.5 fw-semibold d-flex align-items-center gap-2"
+                    >
+                      <UserPlus size={18} />
+                      <span>Înregistrare cu Cod Elev</span>
+                    </button>
+                  </div>
+
+                  <div className="pt-3 border-top border-secondary border-opacity-30">
+                    <small className="text-muted">
+                      Ești elev nou și nu ai primit încă un cod de înscriere? Contactează secretariatul la{' '}
+                      <a href={`tel:${ENV.PHONE_RAW}`} className="text-warning text-decoration-none fw-semibold">
+                        <Phone size={13} className="d-inline me-1" />{ENV.PHONE}
+                      </a>
+                    </small>
+                  </div>
+                </div>
+              ) : !bookingConfirmed ? (
+                /* IF LOGGED IN: SHOW 3-STEP BOOKING WIZARD */
                 <>
                   {/* Step Progress Bar */}
                   <div className="d-flex justify-content-between mb-4 border-bottom border-secondary border-opacity-40 pb-3" style={{ fontSize: '0.88rem' }}>
@@ -121,7 +219,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                     </div>
                     <div className={`d-flex align-items-center gap-2 ${step >= 3 ? 'text-warning fw-bold' : 'text-gray-400'}`}>
                       <span className={`rounded-circle ${step >= 3 ? 'bg-warning text-dark' : 'bg-secondary text-white'} fw-bold d-inline-flex align-items-center justify-content-center flex-shrink-0`} style={{ width: '24px', height: '24px', fontSize: '0.8rem' }}>3</span>
-                      <span className="booking-step-label">3. Date Contact</span>
+                      <span className="booking-step-label">3. Confirmare Date</span>
                     </div>
                   </div>
 
@@ -135,12 +233,12 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                   {/* STEP 1: Category & Instructor Selection */}
                   {step === 1 && (
                     <div>
-                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Alege Categoria & Instructorul:</h5>
+                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Alege Categoria &amp; Instructorul:</h5>
                       
                       <div className="mb-4">
                         <label className="form-label text-gray-300 small fw-semibold">Selectează Categoria Auto:</label>
                         <div className="row g-3">
-                          {COURSES.map(c => (
+                          {COURSES.map((c) => (
                             <div className="col-md-6" key={c.id}>
                               <div 
                                 className={`p-3 rounded-3 border cursor-pointer transition-all ${
@@ -170,7 +268,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                           onChange={(e) => setInstructorId(e.target.value)}
                         >
                           <option value="any">⭐ Oricare instructor disponibil (Recomandat)</option>
-                          {INSTRUCTORS.map(i => (
+                          {INSTRUCTORS.map((i) => (
                             <option key={i.id} value={i.id}>
                               {i.name} - {i.role} ({i.passRate} rată promovabilitate)
                             </option>
@@ -183,7 +281,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                           className="btn btn-warning rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 text-dark"
                           onClick={() => setStep(2)}
                         >
-                          <span>Pasul Următor (Data & Ora)</span>
+                          <span>Pasul Următor (Data &amp; Ora)</span>
                           <ArrowRight size={16} />
                         </button>
                       </div>
@@ -210,7 +308,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                         <div className="col-md-6">
                           <label className="form-label text-gray-300 small fw-semibold">Selectează Intervalul Orar:</label>
                           <div className="row g-2">
-                            {availableTimeSlots.map(slot => (
+                            {availableTimeSlots.map((slot) => (
                               <div className="col-6" key={slot}>
                                 <button
                                   type="button"
@@ -240,7 +338,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                           className="btn btn-warning rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 text-dark"
                           onClick={() => setStep(3)}
                         >
-                          <span>Pasul Următor (Date Contact)</span>
+                          <span>Pasul Următor (Confirmare Date)</span>
                           <ArrowRight size={16} />
                         </button>
                       </div>
@@ -250,7 +348,12 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                   {/* STEP 3: Student Details & Final Confirmation */}
                   {step === 3 && (
                     <form onSubmit={handleCreateBooking}>
-                      <h5 className="fw-bold text-site-heading mb-3 font-heading">Datele Tale de Contact:</h5>
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <h5 className="fw-bold text-site-heading font-heading mb-0">Datele Tale de Elev:</h5>
+                        <span className="badge bg-success bg-opacity-20 text-success border border-success border-opacity-30 small">
+                          ✓ Cont Autentificat: {user?.email}
+                        </span>
+                      </div>
 
                       <div className="row g-3 mb-4">
                         <div className="col-md-6">
@@ -263,7 +366,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                               placeholder="ex: Andrei Popescu"
                               className="form-control bg-dark text-white border-secondary"
                               value={formData.name}
-                              onChange={(e) => setFormData({...formData, name: e.target.value})}
+                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             />
                           </div>
                         </div>
@@ -278,13 +381,13 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                               placeholder="ex: 0722 000 111"
                               className="form-control bg-dark text-white border-secondary"
                               value={formData.phone}
-                              onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             />
                           </div>
                         </div>
 
                         <div className="col-md-12">
-                          <label className="form-label text-gray-300 small fw-semibold">Email (Opțional)</label>
+                          <label className="form-label text-gray-300 small fw-semibold">Adresă de Email</label>
                           <div className="input-group">
                             <span className="input-group-text bg-dark text-gray-400 border-secondary"><Mail size={18} /></span>
                             <input 
@@ -292,7 +395,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                               placeholder="ex: andrei@email.com"
                               className="form-control bg-dark text-white border-secondary"
                               value={formData.email}
-                              onChange={(e) => setFormData({...formData, email: e.target.value})}
+                              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
                           </div>
                         </div>
@@ -304,7 +407,7 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                             placeholder="Mă poți prelua din zona Gară de Sud / Centru Ploiești..."
                             className="form-control bg-dark text-white border-secondary"
                             value={formData.notes}
-                            onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                           ></textarea>
                         </div>
                       </div>
@@ -313,9 +416,15 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                       <div className="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary mb-4">
                         <small className="text-warning fw-bold d-block mb-1">SUMAR PROGRAMARE:</small>
                         <div className="d-flex flex-wrap justify-content-between gap-2 text-white" style={{ fontSize: '0.9rem' }}>
-                          <span><strong>Curs:</strong> {COURSES.find(c => c.id === categoryId)?.title}</span>
+                          <span><strong>Curs:</strong> {COURSES.find((c) => c.id === categoryId)?.title}</span>
                           <span><strong>Data:</strong> {selectedDate}</span>
                           <span><strong>Ora:</strong> {selectedTime}</span>
+                          <span>
+                            <strong>Instructor:</strong>{' '}
+                            {instructorId === 'any'
+                              ? 'Oricare disponibil'
+                              : INSTRUCTORS.find((i) => i.id === instructorId)?.name}
+                          </span>
                         </div>
                       </div>
 
@@ -329,10 +438,11 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                         </button>
                         <button 
                           type="submit"
+                          disabled={submitting}
                           className="btn btn-success bg-gradient-success rounded-pill px-5 py-2.5 fw-bold d-flex align-items-center gap-2 text-white shadow"
                         >
                           <CheckCircle2 size={18} />
-                          <span>Finalizează Programarea</span>
+                          <span>{submitting ? 'Se înregistrează...' : 'Finalizează Programarea'}</span>
                         </button>
                       </div>
                     </form>
@@ -349,10 +459,10 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                     Programare Înregistrată cu Succes!
                   </h3>
                   <p className="text-gray-300 mb-4" style={{ color: '#d1d5db' }}>
-                    Mulțumim, {bookingConfirmed.studentName}! Un instructor ABC Teodor te va contacta telefonic pentru confirmare.
+                    Mulțumim, {bookingConfirmed.studentName}! Programarea ta a fost salvată și este vizibilă în contul tău de elev.
                   </p>
 
-                  <div className="p-4 rounded-4 bg-dark bg-opacity-80 border border-warning max-w-md mx-auto mb-4 text-start shadow">
+                  <div className="p-4 rounded-4 bg-dark bg-opacity-80 border border-warning max-w-md mx-auto mb-4 text-start shadow" style={{ maxWidth: 460, margin: '0 auto' }}>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <span className="badge bg-warning text-dark fw-bold px-2.5 py-1">TICHET #{bookingConfirmed.id}</span>
                       <small className="text-gray-400">Status: <span className="text-info fw-semibold">În Așteptare</span></small>
@@ -362,29 +472,29 @@ export default function BookingCalendar({ preselectedCategory, onBookingCreated 
                       <div><strong>Telefon:</strong> {bookingConfirmed.studentPhone}</div>
                       <div><strong>Curs:</strong> {bookingConfirmed.categoryName}</div>
                       <div><strong>Instructor:</strong> {bookingConfirmed.instructorName}</div>
-                      <div><strong>Data & Ora:</strong> {bookingConfirmed.date} ({bookingConfirmed.time})</div>
+                      <div><strong>Data &amp; Ora:</strong> {bookingConfirmed.date} ({bookingConfirmed.time})</div>
                       <div><strong>Locație:</strong> {bookingConfirmed.location}</div>
                     </div>
                   </div>
 
                   <div className="d-flex flex-wrap justify-content-center gap-3">
                     <button 
-                      className="btn btn-warning rounded-pill px-4 py-2 fw-bold text-dark"
+                      className="btn btn-warning rounded-pill px-4 py-2.5 fw-bold text-dark d-flex align-items-center gap-2 shadow"
+                      onClick={() => navigate(ROUTES.DASHBOARD)}
+                    >
+                      <LayoutDashboard size={18} />
+                      <span>Vezi în Contul Meu</span>
+                    </button>
+
+                    <button 
+                      className="btn btn-outline-light rounded-pill px-4 py-2.5 fw-semibold"
                       onClick={() => {
                         setBookingConfirmed(null);
                         setStep(1);
-                        setFormData({ name: '', phone: '', email: '', notes: '' });
                       }}
                     >
                       Face o altă programare
                     </button>
-
-                    <a 
-                      href={`tel:${ENV.PHONE_RAW}`}
-                      className="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold"
-                    >
-                      <Phone size={16} className="text-warning me-1" /> Contactează Secretariatul
-                    </a>
                   </div>
                 </div>
               )}

@@ -25,16 +25,34 @@ export function AuthProvider({ children }) {
       try {
         const existingProfile = await getDocument(getUserDocRef(firebaseUser.uid));
         if (!existingProfile) {
-          const createdProfile = await createUserProfile(firebaseUser, ROLES.STUDENT);
-          await createStudentProfile(firebaseUser);
-          setProfile(createdProfile);
-          setRole(createdProfile.role || ROLES.STUDENT);
+          try {
+            const createdProfile = await createUserProfile(firebaseUser, ROLES.STUDENT);
+            await createStudentProfile(firebaseUser);
+            setProfile(createdProfile);
+            setRole(createdProfile.role || ROLES.STUDENT);
+          } catch (createErr) {
+            console.warn('Could not write profile to Firestore (check rules):', createErr);
+            setProfile({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Elev',
+              role: ROLES.STUDENT,
+            });
+            setRole(ROLES.STUDENT);
+          }
         } else {
           setProfile(existingProfile);
           setRole(existingProfile.role || ROLES.STUDENT);
         }
       } catch (error) {
-        console.error('Auth bootstrap error', error);
+        console.warn('Auth bootstrap notice:', error);
+        setProfile({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Elev',
+          role: ROLES.STUDENT,
+        });
+        setRole(ROLES.STUDENT);
       } finally {
         setLoading(false);
       }

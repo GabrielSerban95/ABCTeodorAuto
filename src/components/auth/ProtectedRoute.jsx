@@ -15,8 +15,10 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
     return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
   }
 
-  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    const destination = ROLE_DEFAULT_ROUTE[role] || ROUTES.HOME;
+  const currentRole = role || ROLES.STUDENT;
+
+  if (allowedRoles.length > 0 && !allowedRoles.includes(currentRole)) {
+    const destination = ROLE_DEFAULT_ROUTE[currentRole] || ROUTES.HOME;
     return <Navigate to={destination} replace />;
   }
 

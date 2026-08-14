@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { loginWithEmailAndPassword, loginWithGoogle } from '../../firebase/auth';
+import { loginWithEmailAndPassword, loginWithGoogle, getFriendlyAuthErrorMessage } from '../../firebase/auth';
 import { useAuth } from '../../hooks/useAuth';
 import { ROUTES, ROLE_DEFAULT_ROUTE } from '../../constants/routes';
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
     try {
       await loginWithEmailAndPassword(email, password);
     } catch (err) {
-      setError(err.message || 'Autentificarea a eșuat.');
+      setError(getFriendlyAuthErrorMessage(err));
     }
   };
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
     try {
       await loginWithGoogle();
     } catch (err) {
-      setError(err.message || 'Autentificarea Google a eșuat.');
+      setError(getFriendlyAuthErrorMessage(err));
     }
   };
 

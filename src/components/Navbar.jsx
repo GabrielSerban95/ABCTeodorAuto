@@ -90,7 +90,13 @@ export default function Navbar() {
           </button>
 
           <button 
-            onClick={() => scrollToSection('programare')} 
+            onClick={() => {
+              if (user) {
+                navigate(dashboardRoute);
+              } else {
+                scrollToSection('programare');
+              }
+            }} 
             className="btn btn-link text-warning text-decoration-none fw-semibold p-0 d-flex align-items-center gap-2"
             style={{ whiteSpace: 'nowrap', fontSize: '0.88rem' }}
           >
@@ -188,7 +194,14 @@ export default function Navbar() {
               🚘 Parc Auto
             </button>
             <button 
-              onClick={() => scrollToSection('programare')}
+              onClick={() => {
+                if (user) {
+                  navigate(dashboardRoute);
+                  setMobileMenuOpen(false);
+                } else {
+                  scrollToSection('programare');
+                }
+              }}
               className="btn btn-outline-warning text-start text-warning border-0 py-2 fw-bold"
             >
               📅 Programări Ore Conducere

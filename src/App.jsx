@@ -5,7 +5,7 @@ import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
 import CategoriesSection from './components/CategoriesSection';
 import FleetSection from './components/FleetSection';
-import BookingCalendar from './components/BookingCalendar';
+import BookingInfoSection from './components/BookingInfoSection';
 import ChatWidget from './components/ChatWidget';
 import FAQSection from './components/FAQSection';
 import TestimonialsSection from './components/TestimonialsSection';
@@ -58,7 +58,7 @@ function PublicSite({ preselectedCategory, setPreselectedCategory }) {
         <AboutSection />
         <CategoriesSection onSelectCourseForBooking={handleOpenBooking} />
         <FleetSection />
-        <BookingCalendar preselectedCategory={preselectedCategory} />
+        <BookingInfoSection />
         <TestimonialsSection />
         <FAQSection />
         <ContactSection />

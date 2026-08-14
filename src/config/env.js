@@ -39,21 +39,48 @@ const SITE_CONFIG = {
   PORTAL: {
     INSTRUCTOR_TITLE: 'Portal Cadre Didactice & Instructori ABC Teodor',
   },
+
+  ENROLLMENT: {
+    // Coduri valide de înscriere elevi emise de profesori / secretariat
+    AUTHORIZED_CODES: [
+      'ABC2026',
+      'TEODOR2026',
+      'ABC-AUTO',
+      'POP-101',
+      'ION-102',
+      'DUM-103',
+      'STA-104',
+      'ELEV-ABC',
+    ],
+    HELP_PHONE: '0722 123 456',
+  },
+};
+
+const getEnv = (...keys) => {
+  for (const k of keys) {
+    const val = import.meta.env[k];
+    if (typeof val === 'string' && val.trim().length > 0) {
+      return val.trim();
+    }
+  }
+  return '';
 };
 
 const FIREBASE_CONFIG = {
-  API_KEY: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  AUTH_DOMAIN: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  PROJECT_ID: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-  STORAGE_BUCKET: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  MESSAGING_SENDER_ID: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  APP_ID: import.meta.env.VITE_FIREBASE_APP_ID || '',
-  MEASUREMENT_ID: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || '',
+  API_KEY: getEnv('VITE_FIREBASE_API_KEY', 'VITE_FIREBASE_APIKEY', 'VITE_API_KEY'),
+  AUTH_DOMAIN: getEnv('VITE_FIREBASE_AUTH_DOMAIN', 'VITE_FIREBASE_AUTHDOMAIN', 'VITE_AUTH_DOMAIN'),
+  PROJECT_ID: getEnv('VITE_FIREBASE_PROJECT_ID', 'VITE_FIREBASE_PROJECTID', 'VITE_PROJECT_ID'),
+  STORAGE_BUCKET: getEnv('VITE_FIREBASE_STORAGE_BUCKET', 'VITE_FIREBASE_STORAGEBUCKET', 'VITE_STORAGE_BUCKET'),
+  MESSAGING_SENDER_ID: getEnv('VITE_FIREBASE_MESSAGING_SENDER_ID', 'VITE_FIREBASE_MESSAGINGSENDERID', 'VITE_MESSAGING_SENDER_ID'),
+  APP_ID: getEnv('VITE_FIREBASE_APP_ID', 'VITE_FIREBASE_APPID', 'VITE_APP_ID'),
+  MEASUREMENT_ID: getEnv('VITE_FIREBASE_MEASUREMENT_ID', 'VITE_FIREBASE_MEASUREMENTID', 'VITE_MEASUREMENT_ID'),
 };
 
 export const ENV = {
   ...SITE_CONFIG,
   ...SITE_CONFIG.CONTACT,
   ...SITE_CONFIG.SOCIAL,
+  ...SITE_CONFIG.PORTAL,
+  INSTRUCTOR_PORTAL_TITLE: SITE_CONFIG.PORTAL.INSTRUCTOR_TITLE,
   FIREBASE: FIREBASE_CONFIG,
 };
